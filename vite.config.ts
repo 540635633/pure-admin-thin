@@ -43,7 +43,16 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {}
+      proxy: {
+        "/api": {
+          target: "http://localhost:8000",
+          changeOrigin: true,
+          ws: true,
+          rewrite: path => path.replace(new RegExp(`^/api`), "")
+          // only https
+          // secure: false
+        }
+      }
     },
     plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
     // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options
@@ -70,6 +79,13 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     define: {
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify(__APP_INFO__)
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true
+        }
+      }
     }
   };
 };
