@@ -26,10 +26,9 @@ export default {
       }
     },
     {
-      path: "/gym/components/templateAction",
+      path: "/gym/components/group",
       name: "模板动作管理",
-      component: () =>
-        import("@/views/gym/template/components/templateAction.vue"),
+      component: () => import("@/views/gym/template/components/group.vue"),
       meta: {
         title: "模板动作管理"
       }

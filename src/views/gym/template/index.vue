@@ -93,7 +93,7 @@ const getTemplateListData = async () => {
   }
 };
 
-//保存时调用
+//新增
 const insertTemplateData = async () => {
   dialogVisible.value = false;
   await insertTemplate(form);
@@ -118,7 +118,7 @@ const updateTemplateData = async (key: string) => {
   await updateTemplate(templateList.value.filter(item => key === item.key)[0]);
   await getTemplateListData();
 };
-//编辑前时调用
+//单元格编辑前调用
 const beforeEdit = (key: string) => {
   editableData[key] = cloneDeep(
     templateList.value.filter(item => key === item.key)[0]
@@ -140,7 +140,6 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
       <el-button type="success" @click="getTemplateListData"> 刷新 </el-button>
     </div>
     <s-table
-      ref="sTableDiv"
       :row-selection="{ selectedRowKeys: ids, onChange: onSelectChange }"
       bordered
       :data-source="templateList"

@@ -1,4 +1,5 @@
 //去除Suerly vue 水印,父组件用onMounted  子组件用onUpdated
+
 export const removeWatermark = () => {
   removeWatermarkOut();
   removeWatermarkInner();

@@ -13,7 +13,7 @@ import { getPartOptions } from "@/api/part";
 import { dict } from "@/utils/dict";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { Key } from "@surely-vue/table/dist/src/components/interface";
-import {removeWatermark} from "@/utils/removeWatermark";
+import { removeWatermark } from "@/utils/removeWatermark";
 
 //选中ids
 const ids = ref([]);
@@ -108,7 +108,6 @@ const getPartOptionsData = async () => {
     }, 500);
   }
 };
-//新增
 //保存时调用
 const insertActionData = async () => {
   dialogVisible.value = false;
@@ -133,7 +132,7 @@ const updateActionData = async (key: string) => {
   await updateAction(actionList.value.filter(item => key === item.key)[0]);
   await getActionListData();
 };
-//编辑前时调用
+//单元格编辑前调用
 const beforeEdit = (key: string) => {
   editableData[key] = cloneDeep(
     actionList.value.filter(item => key === item.key)[0]
