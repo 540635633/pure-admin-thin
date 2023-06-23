@@ -14,6 +14,7 @@ import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 import { Action } from "@/api/action";
+import {a} from "@vueuse/motion/dist/nuxt-b4cb9b59";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -196,7 +197,7 @@ export type PageResult = {
   success: boolean;
   data?: {
     /** 列表数据 */
-    records: Array<Action>;
+    records: Array<any>;
     /** 总条目数 */
     total?: number;
     /** 每页显示条目个数 */
@@ -212,7 +213,7 @@ export type ListResult = {
   success: boolean;
   data?: {
     /** 列表数据 */
-    records: Array<Action>;
+    records: Array<any>;
   };
   msg?: string;
   code: number;

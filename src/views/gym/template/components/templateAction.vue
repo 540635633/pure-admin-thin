@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
   getTemplateActionList,
-  updateTemplateAction,
-  TemplateAction
+  updateTemplateAction
 } from "@/api/templateAction";
-import { onMounted, reactive, ref, toRefs, UnwrapRef } from "vue";
+import {onMounted, onUpdated, reactive, ref, toRefs, UnwrapRef} from "vue";
 import { cloneDeep } from "@pureadmin/utils";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { getInstrumentOptions } from "@/api/instrument";
 import { getPartOptions } from "@/api/part";
 import { dict } from "@/utils/dict";
+import {removeWatermark} from "@/utils/removeWatermark";
 
 const props = defineProps({
   //子组件接收父组件传递过来的值
@@ -26,7 +26,7 @@ const partOptions = ref<any>([]);
 //器械下拉
 const instrumentOptions = ref<any>([]);
 //编辑数据
-const editableData: UnwrapRef<Record<TemplateAction, any>> = reactive({});
+const editableData: UnwrapRef<Record<string, any>> = reactive({});
 //表单列
 const columns = [
   {
@@ -55,6 +55,10 @@ onMounted(() => {
   getTemplateActionListData();
   getInstrumentOptionsData();
   getPartOptionsData();
+});
+
+onUpdated(() => {
+  removeWatermark();
 });
 //获取模板动作列表
 const getTemplateActionListData = async () => {

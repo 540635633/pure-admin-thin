@@ -6,8 +6,7 @@ import {
   getTemplateList,
   insertTemplate,
   updateTemplate,
-  deleteTemplate,
-  Template
+  deleteTemplate
 } from "@/api/template";
 import { getActionOptions } from "@/api/action";
 import { Pagination } from "@/components/Pagination/Pagination";
@@ -15,8 +14,7 @@ import { cloneDeep } from "@pureadmin/utils";
 import { Key } from "@surely-vue/table/dist/src/components/interface";
 import { dict } from "@/utils/dict";
 import TemplateAction from "@/views/gym/template/components/templateAction.vue";
-
-const sTableDiv = ref([]);
+import { removeWatermark } from "@/utils/removeWatermark";
 
 const ids = ref([]);
 //模板列表
@@ -26,7 +24,7 @@ const dialogVisible = ref(false);
 //动作下拉
 const actionOptions = ref<any>([]);
 //编辑数据
-const editableData: UnwrapRef<Record<Template, any>> = reactive({});
+const editableData: UnwrapRef<Record<string, any>> = reactive({});
 //表单数据
 const form = reactive({
   name: ""
@@ -58,9 +56,9 @@ const columns = [
 
 //初始化
 onMounted(() => {
+  removeWatermark();
   getTemplateListData();
   getActionOptionsData();
-  console.log(sTableDiv.value);
 });
 
 //获取部位下拉

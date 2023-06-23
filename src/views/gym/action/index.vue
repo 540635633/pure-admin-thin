@@ -3,7 +3,6 @@ import {
   getActionList,
   updateAction,
   insertAction,
-  Action,
   deleteAction
 } from "@/api/action";
 import { onMounted, reactive, ref, UnwrapRef } from "vue";
@@ -14,6 +13,7 @@ import { getPartOptions } from "@/api/part";
 import { dict } from "@/utils/dict";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { Key } from "@surely-vue/table/dist/src/components/interface";
+import {removeWatermark} from "@/utils/removeWatermark";
 
 //选中ids
 const ids = ref([]);
@@ -26,7 +26,7 @@ const dialogVisible = ref(false);
 //器械下拉
 const instrumentOptions = ref<any>([]);
 //编辑数据
-const editableData: UnwrapRef<Record<Action, any>> = reactive({});
+const editableData: UnwrapRef<Record<string, any>> = reactive({});
 //表单数据
 const form = reactive({
   name: ""
@@ -60,6 +60,7 @@ const columns = [
 ];
 //初始化
 onMounted(() => {
+  removeWatermark();
   getInstrumentOptionsData();
   getActionListData();
   getPartOptionsData();
