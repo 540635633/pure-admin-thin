@@ -1,15 +1,16 @@
 <template>
   <el-config-provider :locale="currentLocale">
-    <router-view />
+    <router-view :key="key" />
     <ReDialog />
   </el-config-provider>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { ReDialog } from "@/components/ReDialog";
+import { useRoute } from "vue-router";
 export default defineComponent({
   name: "app",
   components: {
@@ -20,6 +21,15 @@ export default defineComponent({
     currentLocale() {
       return zhCn;
     }
+  },
+  setup() {
+    const route = useRoute();
+    const key = computed(() => {
+      return route.path + Math.random();
+    });
+    return {
+      key
+    };
   }
 });
 </script>

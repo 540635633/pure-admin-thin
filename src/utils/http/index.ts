@@ -13,6 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { Action } from "@/api/action";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -191,4 +192,39 @@ class PureHttp {
   }
 }
 
+export type PageResult = {
+  success: boolean;
+  data?: {
+    /** 列表数据 */
+    records: Array<Action>;
+    /** 总条目数 */
+    total?: number;
+    /** 每页显示条目个数 */
+    size?: number;
+    /** 当前页数 */
+    current?: number;
+  };
+  msg?: string;
+  code: number;
+};
+
+export type ListResult = {
+  success: boolean;
+  data?: {
+    /** 列表数据 */
+    records: Array<Action>;
+  };
+  msg?: string;
+  code: number;
+};
+
+export type DataResult = {
+  success: boolean;
+  data?: {};
+  msg?: string;
+  code: number;
+};
+
 export const http = new PureHttp();
+
+export const RequestPrefix = "/api";
