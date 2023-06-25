@@ -7,5 +7,5 @@ enum Api {
 
 /** 获部位管理列表 */
 export const getPartOptions = (data?: object) => {
-  return http.request<ListResult>("get", Api.options, { data });
+  return http.request<ListResult<any>>("get", Api.options, { data });
 };

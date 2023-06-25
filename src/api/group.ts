@@ -4,22 +4,21 @@ enum Api {
   list = RequestPrefix + "/gym/group/list",
   update = RequestPrefix + "/gym/group/update",
   remove = RequestPrefix + "/gym/group/remove",
-  save = RequestPrefix + "/gym/group/save",
   addGroup = RequestPrefix + "/gym/group/addGroup",
   copy = RequestPrefix + "/gym/group/copy"
 }
 
 export interface TemplateAction {
   key: string;
-  sortOrder: number;
-  expectTimes: number;
-  expectWeight: number;
-  partIds: string[];
+  sortOrder?: number;
+  expectTimes?: number;
+  expectWeight?: number;
+  partIds?: string[];
 }
 
 /** 获取模板下动作管理列表 */
 export const getGroupList = (data?: any) => {
-  return http.get<any, ListResult>(Api.list + `?templateActionId=${data}`);
+  return http.get<any, ListResult<any>>(Api.list + `?templateActionId=${data}`);
 };
 
 /** 保存 */

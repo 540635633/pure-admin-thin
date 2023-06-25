@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  deleteTemplateAction,
   getTemplateActionList,
   updateTemplateAction
 } from "@/api/templateAction";
@@ -12,17 +13,28 @@ import { dict } from "@/utils/dict";
 import { removeWatermark } from "@/utils/removeWatermark";
 import Group from "@/views/gym/template/components/group.vue";
 import { addGroup } from "@/api/group";
+import { number } from "vue-types";
+import { getActionOptions } from "@/api/action";
 
 const props = defineProps({
   //子组件接收父组件传递过来的值
-  templateId: String
+  templateId: String,
+  version: number
 });
 
+//通知子组件渲染
+const currentTime = ref();
+
+// 定义发射给父组件的方法
+const emits = defineEmits(["render"]);
+
 //使用父组件传递过来的值
-const { templateId } = toRefs(props);
+const { templateId, version } = toRefs(props);
 
 const templateActionList = ref<any>([]);
 
+//动作下拉
+const actionOptions = ref<any>([]);
 //部位下拉
 const partOptions = ref<any>([]);
 //器械下拉
@@ -39,7 +51,7 @@ const columns = [
   },
   {
     title: "动作",
-    dataIndex: "name",
+    dataIndex: "actionId",
     autoHeight: true
   },
   {
@@ -48,7 +60,7 @@ const columns = [
   },
   {
     title: "部位",
-    width: "40%",
+    width: "30%",
     dataIndex: "partIds"
   },
   {
@@ -61,16 +73,42 @@ onMounted(() => {
   getTemplateActionListData();
   getInstrumentOptionsData();
   getPartOptionsData();
+  getActionOptionsData();
 });
 
 onUpdated(() => {
   removeWatermark();
 });
+
+const getTime = () => {
+  const now = new Date();
+  currentTime.value = now.getTime();
+};
+
+//获取动作下拉
+const getActionOptionsData = async () => {
+  try {
+    const { data } = await getActionOptions();
+    actionOptions.value = data;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    setTimeout(() => {
+      //dataLoading.value = false;
+    }, 500);
+  }
+};
+
 //获取模板动作列表
 const getTemplateActionListData = async () => {
   try {
-    const { data } = await getTemplateActionList(templateId.value);
+    const { data } = await getTemplateActionList({
+      templateId: templateId.value,
+      version: version.value
+    });
     templateActionList.value = data;
+    //告诉父组件重新渲染
+    emits("render", "render");
   } catch (e) {
     console.log(e);
   } finally {
@@ -104,7 +142,7 @@ const getPartOptionsData = async () => {
   }
 };
 //保存时调用
-const updateActionData = async (key: string) => {
+const updateTemplateActionData = async (key: string) => {
   Object.assign(
     templateActionList.value.filter(item => key === item.key)[0],
     editableData[key]
@@ -124,7 +162,13 @@ const beforeEdit = (key: string) => {
 };
 
 const addGroupData = async (key: any) => {
-  await addGroup({ key });
+  await addGroup({ key, version });
+  getTime();
+};
+
+const deleteTemplateActionData = async (key: any) => {
+  await deleteTemplateAction({ key });
+  await getTemplateActionList();
 };
 </script>
 
@@ -149,11 +193,47 @@ const addGroupData = async (key: any) => {
             />
             <check-outlined
               class="editable-cell-icon-check"
-              @click="updateActionData(record.key)"
+              @click="updateTemplateActionData(record.key)"
             />
           </div>
           <div v-else class="editable-cell-text-wrapper">
             {{ text || " " }}
+            <edit-outlined
+              class="editable-cell-icon"
+              @click="beforeEdit(record.key)"
+            />
+          </div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'actionId'">
+        <div class="editable-cell">
+          <div
+            v-if="editableData[record.key]"
+            class="editable-cell-input-wrapper"
+          >
+            <el-select
+              v-model="editableData[record.key].actionId"
+              style="width: 100%"
+              collapse-tags-tooltip
+              placeholder="Select"
+              @pressEnter="updateTemplateActionData(record.key)"
+            >
+              <el-option
+                v-for="item in actionOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+            <check-outlined
+              class="editable-cell-icon-check"
+              @click="updateTemplateActionData(record.key)"
+            />
+          </div>
+          <div v-else class="editable-cell-text-wrapper">
+            <el-tag class="mx-1" v-if="text">
+              {{ dict(actionOptions, text) }}
+            </el-tag>
             <edit-outlined
               class="editable-cell-icon"
               @click="beforeEdit(record.key)"
@@ -183,10 +263,16 @@ const addGroupData = async (key: any) => {
         <el-button type="primary" text @click="addGroupData(record.key)"
           >新增组
         </el-button>
+        <el-button
+          type="primary"
+          text
+          @click="deleteTemplateActionData(record.key)"
+          >删除
+        </el-button>
       </template>
     </template>
     <template #expandedRowRender="{ record }">
-      <group :templateActionId="record.key" />
+      <group :key="currentTime" :templateActionId="record.key" />
     </template>
   </s-table>
 </template>

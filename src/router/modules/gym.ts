@@ -10,14 +10,6 @@ export default {
   },
   children: [
     {
-      path: "/gym/action",
-      name: "动作管理",
-      component: () => import("@/views/gym/action/index.vue"),
-      meta: {
-        title: "动作管理"
-      }
-    },
-    {
       path: "/gym/template",
       name: "模板管理",
       component: () => import("@/views/gym/template/index.vue"),
@@ -26,11 +18,19 @@ export default {
       }
     },
     {
-      path: "/gym/components/group",
-      name: "模板动作管理",
-      component: () => import("@/views/gym/template/components/group.vue"),
+      path: "/gym/templateLog",
+      name: "日记管理",
+      component: () => import("@/views/gym/templateLog/index.vue"),
       meta: {
-        title: "模板动作管理"
+        title: "日记管理"
+      }
+    },
+    {
+      path: "/gym/action",
+      name: "动作管理",
+      component: () => import("@/views/gym/action/index.vue"),
+      meta: {
+        title: "动作管理"
       }
     }
   ]

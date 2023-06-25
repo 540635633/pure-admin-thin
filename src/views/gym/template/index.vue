@@ -6,7 +6,8 @@ import {
   getTemplateList,
   insertTemplate,
   updateTemplate,
-  deleteTemplate
+  deleteTemplate,
+  Template, templateCopy, templateUp
 } from "@/api/template";
 import { getActionOptions } from "@/api/action";
 import { Pagination } from "@/components/Pagination/Pagination";
@@ -15,10 +16,29 @@ import { Key } from "@surely-vue/table/dist/src/components/interface";
 import { dict } from "@/utils/dict";
 import TemplateAction from "@/views/gym/template/components/templateAction.vue";
 import { removeWatermark } from "@/utils/removeWatermark";
+import { saveTemplateAction } from "@/api/templateAction";
+import { recordLog } from "@/api/groupLog";
+
+const versionOptions = ref<any>([]);
+
+for (let i = 0; i < 1000; i++) {
+  const value = 1 + i / 100;
+  versionOptions.value.push({
+    label: value,
+    value
+  });
+}
+
+// 接收子组件信息定义的方法
+const render = () => {
+  getTemplateListData();
+};
+//通知子组件渲染
+const currentTime = ref();
 
 const ids = ref([]);
 //模板列表
-const templateList = ref([]);
+const templateList = ref<Template[]>([]);
 //弹框
 const dialogVisible = ref(false);
 //动作下拉
@@ -44,13 +64,18 @@ const columns = [
   },
   {
     title: "动作",
-    width: "60%",
+    width: "35%",
     dataIndex: "actionIds"
+  },
+  {
+    title: "版本",
+    width: "10%",
+    dataIndex: "version"
   },
   {
     title: "操作",
     dataIndex: "operation",
-    width: "20%"
+    width: "33%"
   }
 ];
 
@@ -61,7 +86,13 @@ onMounted(() => {
   getActionOptionsData();
 });
 
-//获取部位下拉
+//重新获取当前时间，通知子组件更新
+const getTime = () => {
+  const now = new Date();
+  currentTime.value = now.getTime();
+};
+
+//获取动作下拉
 const getActionOptionsData = async () => {
   try {
     const { data } = await getActionOptions();
@@ -106,6 +137,22 @@ const deleteTemplateData = async (ids: any[]) => {
   ids = [];
   await getTemplateListData();
 };
+//新增动作
+const saveTemplateActionData = async data => {
+  await saveTemplateAction(data);
+  getTime();
+};
+
+const templateCopyData = async data => {
+  await templateCopy(data);
+  await getTemplateListData();
+};
+
+const templateUpData = async data => {
+  await templateUp(data);
+  await getTemplateListData();
+};
+
 //保存时调用
 const updateTemplateData = async (key: string) => {
   Object.assign(
@@ -117,6 +164,7 @@ const updateTemplateData = async (key: string) => {
   console.log(templateList.value);
   await updateTemplate(templateList.value.filter(item => key === item.key)[0]);
   await getTemplateListData();
+  getTime();
 };
 //单元格编辑前调用
 const beforeEdit = (key: string) => {
@@ -173,20 +221,26 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
         </template>
         <template v-if="column.dataIndex === 'actionIds'">
           <div class="editable-cell">
+            <el-tag class="mx-1" v-for="key in text" :key="key">
+              {{ dict(actionOptions, key) }}
+            </el-tag>
+          </div>
+        </template>
+        <template v-if="column.dataIndex === 'version'">
+          <div class="editable-cell">
             <div
               v-if="editableData[record.key]"
               class="editable-cell-input-wrapper"
             >
               <el-select
-                v-model="editableData[record.key].actionIds"
-                multiple
+                v-model="editableData[record.key].version"
                 style="width: 100%"
                 collapse-tags-tooltip
                 placeholder="Select"
                 @pressEnter="updateTemplateData(record.key)"
               >
                 <el-option
-                  v-for="item in actionOptions"
+                  v-for="item in versionOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -198,8 +252,8 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
               />
             </div>
             <div v-else class="editable-cell-text-wrapper">
-              <el-tag class="mx-1" v-for="key in text" :key="key">
-                {{ dict(actionOptions, key) }}
+              <el-tag class="mx-1" v-if="text">
+                {{ text }}
               </el-tag>
               <edit-outlined
                 class="editable-cell-icon"
@@ -215,10 +269,36 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
             @click="deleteTemplateData([record.key])"
             >删除</el-button
           >
+          <el-button
+            type="primary"
+            text
+            @click="
+              saveTemplateActionData({
+                templateId: record.key,
+                version: record.version,
+                actionIds: record.actionIds
+              })
+            "
+            >新增动作</el-button
+          >
+          <el-button type="primary" text @click="recordLog(record.key)"
+            >记录</el-button
+          >
+          <el-button type="primary" text @click="templateCopyData(record.key)"
+            >复制</el-button
+          >
+          <el-button type="primary" text @click="templateUpData(record.key)"
+          >升级</el-button
+          >
         </template>
       </template>
       <template #expandedRowRender="{ record }">
-        <template-action :templateId="record.key" />
+        <template-action
+          @render="render"
+          :templateId="record.key"
+          :version="record.version"
+          :key="currentTime"
+        />
       </template>
     </s-table>
     <div class="pagination-block">

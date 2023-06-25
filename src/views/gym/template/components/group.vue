@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, UnwrapRef, toRefs, onUpdated } from "vue";
-import {updateGroup, getGroupList, deleteGroup, copyGroup} from "@/api/group";
+import {
+  updateGroup,
+  getGroupList,
+  deleteGroup,
+  copyGroup,
+  TemplateAction
+} from "@/api/group";
 import { cloneDeep } from "@pureadmin/utils";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { removeWatermark } from "@/utils/removeWatermark";
-import {updateAction} from "@/api/action";
 
 const props = defineProps({
   //子组件接收父组件传递过来的值
@@ -14,7 +19,7 @@ const props = defineProps({
 //使用父组件传递过来的值
 const { templateActionId } = toRefs(props);
 
-const groupList = ref<any>([]);
+const groupList = ref<TemplateAction[]>([]);
 //编辑数据
 const editableData: UnwrapRef<Record<string, any>> = reactive({});
 //表单列
