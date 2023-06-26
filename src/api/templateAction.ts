@@ -1,5 +1,4 @@
 import { http, RequestPrefix, ListResult, DataResult } from "@/utils/http";
-import templates from "rollup-plugin-visualizer/dist/plugin/template-types";
 
 enum Api {
   list = RequestPrefix + "/gym/templateAction/list",

@@ -6,7 +6,8 @@ import {
   getTemplateLogList,
   updateTemplateLog,
   deleteTemplateLog,
-  TemplateLog, exportTemplateLog
+  TemplateLog,
+  exportTemplateLog
 } from "@/api/templateLog";
 import { getActionOptions } from "@/api/action";
 import { Pagination } from "@/components/Pagination/Pagination";
@@ -14,9 +15,7 @@ import { cloneDeep } from "@pureadmin/utils";
 import { dict } from "@/utils/dict";
 import TemplateAction from "@/views/gym/templateLog/components/templateAction.vue";
 import { removeWatermark } from "@/utils/removeWatermark";
-import {Template} from "@/api/template";
 
-const ids = ref([]);
 //模板列表
 const templateLogList = ref<TemplateLog[]>([]);
 //动作下拉
@@ -138,7 +137,7 @@ const deleteTemplateLogData = async (ids: any[]) => {
   ids = [];
   await getTemplateLogListData();
 };
-const exportTemplateLogData = async (data) => {
+const exportTemplateLogData = async data => {
   await exportTemplateLog(data);
   await getTemplateLogListData();
 };
@@ -166,9 +165,6 @@ const beforeEdit = (key: string) => {
 <template>
   <el-card class="box-card">
     <div style="margin-bottom: 20px">
-      <el-button type="warning" @click="deleteTemplateData(ids)">
-        删除
-      </el-button>
       <el-button type="success" @click="getTemplateLogListData">
         刷新
       </el-button>
@@ -275,7 +271,10 @@ const beforeEdit = (key: string) => {
         </template>
       </template>
       <template #expandedRowRender="{ record }">
-        <template-action :version="record.version" :templateId="record.templateId" />
+        <template-action
+          :version="record.version"
+          :templateId="record.templateId"
+        />
       </template>
     </s-table>
     <div class="pagination-block">

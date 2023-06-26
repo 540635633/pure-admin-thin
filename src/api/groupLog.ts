@@ -16,7 +16,9 @@ export interface TemplateAction {
 
 /** 获取模板下动作管理列表 */
 export const getGroupLogList = (data?: any) => {
-  return http.get<any, ListResult<any>>(Api.list + `?templateActionId=${data}`);
+  return http.get<any, ListResult<TemplateAction>>(
+    Api.list + `?templateActionId=${data}`
+  );
 };
 
 /** 保存 */

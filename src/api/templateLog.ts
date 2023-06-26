@@ -1,14 +1,8 @@
-import {
-  http,
-  RequestPrefix,
-  PageResult,
-  DataResult
-} from "@/utils/http";
+import { http, RequestPrefix, PageResult, DataResult } from "@/utils/http";
 import { Pagination } from "@/components/Pagination/Pagination";
 
 enum Api {
   list = RequestPrefix + "/gym/templateLog/list",
-  save = RequestPrefix + "/gym/templateLog/save",
   update = RequestPrefix + "/gym/templateLog/update",
   delete = RequestPrefix + "/gym/templateLog/delete",
   export = RequestPrefix + "/gym/templateLog/export"
@@ -35,10 +29,6 @@ export const exportTemplateLog = data => {
 
 export const updateTemplateLog = (data?: TemplateLog) => {
   return http.request<DataResult>("put", Api.update, { data });
-};
-
-export const insertTemplateLog = (data?: object) => {
-  return http.request<DataResult>("post", Api.save, { data });
 };
 
 export const deleteTemplateLog = (data?: object) => {

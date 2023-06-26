@@ -6,9 +6,7 @@ import { getPartOptions } from "@/api/part";
 import { dict } from "@/utils/dict";
 import { removeWatermark } from "@/utils/removeWatermark";
 import GroupLog from "@/views/gym/templateLog/components/groupLog.vue";
-import {Template} from "@/api/template";
-import {getActionOptions} from "@/api/action";
-import {CheckOutlined, EditOutlined} from "@ant-design/icons-vue";
+import { getActionOptions } from "@/api/action";
 
 const props = defineProps({
   //子组件接收父组件传递过来的值

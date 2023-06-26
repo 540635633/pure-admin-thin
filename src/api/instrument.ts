@@ -7,5 +7,5 @@ enum Api {
 
 /** 获取动作管理列表 */
 export const getInstrumentOptions = (data?: object) => {
-  return http.request<ListResult>("get", Api.options, { data });
+  return http.request<ListResult<any>>("get", Api.options, { data });
 };

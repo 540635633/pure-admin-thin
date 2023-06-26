@@ -7,7 +7,9 @@ import {
   insertTemplate,
   updateTemplate,
   deleteTemplate,
-  Template, templateCopy, templateUp
+  Template,
+  templateCopy,
+  templateUp
 } from "@/api/template";
 import { getActionOptions } from "@/api/action";
 import { Pagination } from "@/components/Pagination/Pagination";
@@ -288,7 +290,7 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
             >复制</el-button
           >
           <el-button type="primary" text @click="templateUpData(record.key)"
-          >升级</el-button
+            >升级</el-button
           >
         </template>
       </template>
