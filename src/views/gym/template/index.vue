@@ -88,6 +88,11 @@ onMounted(() => {
   getActionOptionsData();
 });
 
+const refresh = () => {
+  getTemplateListData();
+  getActionOptionsData();
+};
+
 //重新获取当前时间，通知子组件更新
 const getTime = () => {
   const now = new Date();
@@ -187,7 +192,7 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
       <el-button type="warning" @click="deleteTemplateData(ids)">
         删除
       </el-button>
-      <el-button type="success" @click="getTemplateListData"> 刷新 </el-button>
+      <el-button type="success" @click="refresh"> 刷新 </el-button>
     </div>
     <s-table
       :row-selection="{ selectedRowKeys: ids, onChange: onSelectChange }"

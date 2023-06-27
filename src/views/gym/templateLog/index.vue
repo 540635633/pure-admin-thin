@@ -100,6 +100,11 @@ onMounted(() => {
   getActionOptionsData();
 });
 
+const refresh = () => {
+  getTemplateLogListData();
+  getActionOptionsData();
+};
+
 //获取部位下拉
 const getActionOptionsData = async () => {
   try {
@@ -165,9 +170,7 @@ const beforeEdit = (key: string) => {
 <template>
   <el-card class="box-card">
     <div style="margin-bottom: 20px">
-      <el-button type="success" @click="getTemplateLogListData">
-        刷新
-      </el-button>
+      <el-button type="success" @click="refresh"> 刷新 </el-button>
     </div>
     <s-table
       bordered
