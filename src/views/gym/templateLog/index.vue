@@ -259,12 +259,12 @@ const beforeEdit = (key: string) => {
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <el-button
+          <!--          <el-button
             type="primary"
             text
             @click="deleteTemplateLogData([record.key])"
             >删除</el-button
-          >
+          >-->
           <el-button
             type="primary"
             text
@@ -277,6 +277,7 @@ const beforeEdit = (key: string) => {
         <template-action
           :version="record.version"
           :templateId="record.templateId"
+          :templateLogId="record.key"
         />
       </template>
     </s-table>

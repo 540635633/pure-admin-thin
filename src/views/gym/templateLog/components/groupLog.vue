@@ -7,12 +7,13 @@ import { removeWatermark } from "@/utils/removeWatermark";
 
 const props = defineProps({
   //子组件接收父组件传递过来的值
-  templateActionId: String
+  templateActionId: String,
+  templateLogId: String
 });
 
 //使用父组件传递过来的值
-const { templateActionId } = toRefs(props);
-
+const { templateActionId, templateLogId } = toRefs(props);
+console.log("5457 ", templateLogId.value);
 const groupLogList = ref<any>([]);
 //编辑数据
 const editableData: UnwrapRef<Record<string, any>> = reactive({});
@@ -43,7 +44,10 @@ onUpdated(() => {
 //获取组动作列表
 const getGroupLogListData = async () => {
   try {
-    const { data } = await getGroupLogList(templateActionId.value);
+    const { data } = await getGroupLogList({
+      templateActionId: templateActionId.value,
+      templateLogId: templateLogId.value
+    });
     groupLogList.value = data;
   } catch (e) {
     console.log(e);

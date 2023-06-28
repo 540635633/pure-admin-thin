@@ -11,12 +11,13 @@ import { getActionOptions } from "@/api/action";
 const props = defineProps({
   //子组件接收父组件传递过来的值
   templateId: String,
-  version: String
+  version: String,
+  templateLogId: String
 });
 //动作下拉
 const actionOptions = ref<any>([]);
 //使用父组件传递过来的值
-const { templateId, version } = toRefs(props);
+const { templateId, version, templateLogId } = toRefs(props);
 
 const templateActionList = ref<any>([]);
 
@@ -145,7 +146,10 @@ const getPartOptionsData = async () => {
       </template>
     </template>
     <template #expandedRowRender="{ record }">
-      <group-log :templateActionId="record.key" />
+      <group-log
+        :templateActionId="record.key"
+        :templateLogId="templateLogId.valueOf()"
+      />
     </template>
   </s-table>
 </template>
