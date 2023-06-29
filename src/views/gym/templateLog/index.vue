@@ -263,9 +263,8 @@ const beforeEdit = (key: string) => {
             type="primary"
             text
             @click="deleteTemplateLogData([record.key])"
-          >删除
-          </el-button
-          >
+            >删除
+          </el-button>
           <el-button
             type="primary"
             text
