@@ -12,6 +12,8 @@ export interface TemplateAction {
   expectTimes?: number;
   actualTimes?: number;
   expectWeight?: number;
+  rm?: number;
+  rpe?: number;
 }
 
 /** 获取模板下动作管理列表 */

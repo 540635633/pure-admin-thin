@@ -7,12 +7,13 @@ enum Api {
   addGroup = RequestPrefix + "/gym/group/addGroup",
   copy = RequestPrefix + "/gym/group/copy"
 }
-
 export interface TemplateAction {
   key: string;
   sortOrder?: number;
   expectTimes?: number;
   expectWeight?: number;
+  rm?: number;
+  rpe?: number;
   partIds?: string[];
 }
 

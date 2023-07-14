@@ -21,7 +21,6 @@ const columns = [
   {
     title: "组序号",
     dataIndex: "sortOrder",
-    width: "30%",
     autoHeight: true
   },
   {
@@ -33,8 +32,17 @@ const columns = [
     dataIndex: "expectWeight"
   },
   {
+    title: "rm",
+    dataIndex: "rm"
+  },
+  {
+    title: "rpe",
+    dataIndex: "rpe"
+  },
+  {
     title: "操作",
-    dataIndex: "operation"
+    dataIndex: "operation",
+    width: "13%"
   }
 ];
 
@@ -135,7 +143,7 @@ const copyGroupData = async (key: string) => {
             />
           </div>
           <div v-else class="editable-cell-text-wrapper">
-            {{ text || " " }}
+            {{ text || "0" }}
             <edit-outlined
               class="editable-cell-icon"
               @click="beforeEdit(record.key)"
@@ -161,7 +169,59 @@ const copyGroupData = async (key: string) => {
             />
           </div>
           <div v-else class="editable-cell-text-wrapper">
-            {{ text || " " }}
+            {{ text || "0" }}
+            <edit-outlined
+              class="editable-cell-icon"
+              @click="beforeEdit(record.key)"
+            />
+          </div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'rm'">
+        <div class="editable-cell">
+          <div
+            v-if="editableData[record.key]"
+            class="editable-cell-input-wrapper"
+          >
+            <el-input-number
+              v-model="editableData[record.key].rm"
+              placeholder="Please input"
+              :precision="1"
+              :step="0.1"
+            />
+            <check-outlined
+              class="editable-cell-icon-check"
+              @click="updateGroupData(record.key)"
+            />
+          </div>
+          <div v-else class="editable-cell-text-wrapper">
+            {{ text || "0" }}
+            <edit-outlined
+              class="editable-cell-icon"
+              @click="beforeEdit(record.key)"
+            />
+          </div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'rpe'">
+        <div class="editable-cell">
+          <div
+            v-if="editableData[record.key]"
+            class="editable-cell-input-wrapper"
+          >
+            <el-input-number
+              v-model="editableData[record.key].rpe"
+              placeholder="Please input"
+              :precision="1"
+              :step="0.1"
+            />
+            <check-outlined
+              class="editable-cell-icon-check"
+              @click="updateGroupData(record.key)"
+            />
+          </div>
+          <div v-else class="editable-cell-text-wrapper">
+            {{ text || "0" }}
             <edit-outlined
               class="editable-cell-icon"
               @click="beforeEdit(record.key)"
@@ -170,10 +230,18 @@ const copyGroupData = async (key: string) => {
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'operation'">
-        <el-button type="primary" text @click="deleteGroupData([record.key])"
+        <el-button
+          size="small"
+          type="primary"
+          text
+          @click="deleteGroupData([record.key])"
           >删除
         </el-button>
-        <el-button type="primary" text @click="copyGroupData(record.key)"
+        <el-button
+          size="small"
+          type="primary"
+          text
+          @click="copyGroupData(record.key)"
           >复制
         </el-button>
       </template>

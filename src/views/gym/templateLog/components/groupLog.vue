@@ -30,6 +30,14 @@ const columns = [
   {
     title: "期望重量",
     dataIndex: "expectWeight"
+  },
+  {
+    title: "rm",
+    dataIndex: "rm"
+  },
+  {
+    title: "rpe",
+    dataIndex: "rpe"
   }
 ];
 
@@ -106,7 +114,7 @@ const beforeEdit = (key: string) => {
             />
           </div>
           <div v-else class="editable-cell-text-wrapper">
-            {{ text || " " }}
+            {{ text || "0" }}
             <edit-outlined
               class="editable-cell-icon"
               @click="beforeEdit(record.key)"
@@ -117,7 +125,21 @@ const beforeEdit = (key: string) => {
       <template v-if="column.dataIndex === 'expectWeight'">
         <div class="editable-cell">
           <div class="editable-cell-text-wrapper">
-            {{ text || " " }}
+            {{ text || "0" }}
+          </div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'rm'">
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            {{ text || "0" }}
+          </div>
+        </div>
+      </template>
+      <template v-if="column.dataIndex === 'rpe'">
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            {{ text || "0" }}
           </div>
         </div>
       </template>
